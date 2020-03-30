@@ -1,14 +1,30 @@
 import React, { useState } from 'react'
 import ShoppingSearch from './shopping-search'
 import { analyzeSentence } from './shopping-analyze-service'
+import ProductInfo from '../../components/product-info'
+import { ProductFound, Product } from './models'
 
 const ShoppingPage = () => {
     const [message, setMessage] = useState('')
     const [isCartEmpty, setCartStatus] = useState(true)
 
-    const onSearch = (sentence: string) => {
-        const t = analyzeSentence(sentence);
+    const [foundProducts, setFoundProducts] = useState([] as Product[])
+
+    const onSearch = async (sentence: string) => {
+        //TODO: Fix
+        const resp = await analyzeSentence(sentence) as ProductFound[];
+
+        if (resp && resp.length > 0) {
+            setFoundProducts(resp.map(mapToProduct));
+        }
     }
+
+    const mapToProduct = (found: ProductFound): Product => ({
+        name: found.product,
+        imageUrl: found.imageUrl,
+        description: ''
+    })
+
     return (<article className="container">
         <div>
             <section>
@@ -19,7 +35,7 @@ const ShoppingPage = () => {
             </section>
             <section>
                 <div className="list-group">
-
+                    {foundProducts.map((product, key) => <ProductInfo key={key} product={product} />)}
                 </div>
             </section >
         </div >

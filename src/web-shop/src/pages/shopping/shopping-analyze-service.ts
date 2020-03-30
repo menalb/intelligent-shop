@@ -2,16 +2,11 @@ import { ProductFound, BuyProduct, NoProduct } from './models';
 import { settings } from '../../services/configuration';
 
 
-export const analyzeSentence = (sentence: string): AnalyzeResult => {
-
-
-    fetch(`${settings.api}/process?sentence=${sentence}`).then(response => response.json().then(body => console.log(body)));
-
-    return ({ kind: 'no-product' });
-    // return this.http.get<Result>(`${this.apiRoot}/process?sentence=${sentence}`)
-    //     .pipe(
-    //         map(resp => this.processAnalyzeResult(resp)),
-    //         catchError(this.handleError<ProductFound[] | BuyProduct>('analyzeSentence', [])));
+export const analyzeSentence = async (sentence: string): Promise<AnalyzeResult> => {
+    return await fetch(`${settings.api}/process?sentence=${sentence}`)
+        .then(response => response
+            .json()
+            .then(body => processAnalyzeResult(body)));
 }
 
 const processAnalyzeResult = (result: Result): AnalyzeResult =>
@@ -29,7 +24,7 @@ const processBuyResult = (entities: Entity[]): BuyProduct =>
     } : { kind: 'buy', product: '' };
 
 
-const buildImageUrl = (itemName: string): string => `./assets/search/search_${itemName}.jpg`;
+const buildImageUrl = (itemName: string): string => `./assets/images/search_${itemName}.jpg`;
 
 // private handleError<T>(operation = 'operation', result?: T) {
 //     return (error: any): Observable<T> => {

@@ -7,6 +7,11 @@ export interface BuyProduct {
     product?: string;
 }
 
+export interface Product {
+    name: string;
+    imageUrl: string;
+}
+
 export interface ProductFound {
     kind: 'found-product';
     product: string;

@@ -6,7 +6,10 @@ const RecognizerShoppingSearch = (props: { searchSentence: (text: string) => voi
 
     const [result, setResult] = useState('');
     const search = () => props.searchSentence(result);
-    const start = () => startSpeechRecognizer(props.speechRecognizer, setResult);
+    const start = () => startSpeechRecognizer(props.speechRecognizer, result => {
+        setResult(result);
+        props.searchSentence(result);
+    });
     const stop = () => stopSpeechRecognizer(props.speechRecognizer)
 
     return (<article>
