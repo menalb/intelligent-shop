@@ -1,3 +1,3 @@
 export const settings = {
-    api: process.env.REACT_APP_SPEECH_SDK_API_KEY ?? '',
+    api: process.env.REACT_APP_PRODUCTS_API ?? '',
 };
