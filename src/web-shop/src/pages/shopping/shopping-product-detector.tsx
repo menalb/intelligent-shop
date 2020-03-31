@@ -33,7 +33,7 @@ const ShoppingProductDetector = () => {
     })
     return (
         <>
-            <section>
+            <section className="product-search-container">
                 <ShoppingSearch searchSentence={onSearch} />
             </section>
             {foundProducts.length === 0 &&

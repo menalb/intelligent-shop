@@ -12,18 +12,20 @@ const RecognizerShoppingSearch = (props: { searchSentence: (text: string) => voi
     });
     const stop = () => stopSpeechRecognizer(props.speechRecognizer)
 
-    return (<article>
+    return (<article className="product-search">
         <input type="text" placeholder="cosa ti serve?" />
-        <button onClick={search}>
-            Cerca
+        <span className="product-search-actions">
+            <button onClick={search}>
+                Cerca
         </button>
-        <button onClick={start} >
-            Avvia Riconoscimento
+            <button onClick={start} >
+                Avvia Riconoscimento
         </button >
 
-        <button onClick={stop} >
-            Stop Riconoscimento
+            <button onClick={stop} >
+                Stop Riconoscimento
         </button >
+        </span>
     </article>);
 }
 

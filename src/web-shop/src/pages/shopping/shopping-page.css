@@ -1,0 +1,20 @@
+    .product-search {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .product-search-actions {
+        padding: 0 1rem;
+    }
+    
+    .product-search-actions button {
+        margin: 0 0.5rem;
+    }
+    
+    .product-search-container {
+        position: absolute;
+        top: 2vw;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }

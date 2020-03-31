@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import ShoppingProductDetector from './shopping-product-detector'
+import './shopping-page.css'
+
 
 const ShoppingPage = () => {
 
