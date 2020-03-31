@@ -24,7 +24,6 @@ const RecognizerShoppingSearch = (props: { searchSentence: (text: string) => voi
         <button onClick={stop} >
             Stop Riconoscimento
         </button >
-        {result}
     </article>);
 }
 

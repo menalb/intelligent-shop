@@ -1,12 +1,17 @@
-import { ProductFound, BuyProduct, NoProduct } from './models';
-import { settings } from '../../services/configuration';
+import { settings } from '../configuration';
+import { AnalyzeResult, Result, Entity, AnalyzeFailureResult } from './models';
+import { ProductFound, BuyProduct } from '../../pages/shopping/models';
 
-
-export const analyzeSentence = async (sentence: string): Promise<AnalyzeResult> => {
+export const analyzeSentence = async (sentence: string): Promise<AnalyzeResult | AnalyzeFailureResult> => {
     return await fetch(`${settings.api}/process?sentence=${sentence}`)
         .then(response => response
             .json()
-            .then(body => processAnalyzeResult(body)));
+            .then(body => processAnalyzeResult(body)))
+        .catch(error => {
+            return ({
+                error: Error(error)
+            })
+        });
 }
 
 const processAnalyzeResult = (result: Result): AnalyzeResult =>
@@ -26,26 +31,3 @@ const processBuyResult = (entities: Entity[]): BuyProduct =>
 
 const buildImageUrl = (itemName: string): string => `./assets/images/search_${itemName}.jpg`;
 
-// private handleError<T>(operation = 'operation', result?: T) {
-//     return (error: any): Observable<T> => {
-//         console.error(error);
-//         return of(result as T);
-//     };
-// }
-
-
-export type AnalyzeResult = ProductFound[] | BuyProduct | NoProduct;
-
-interface Result {
-    topScoringIntent: TopIntent;
-    entities: Entity[];
-}
-
-interface TopIntent {
-    intent: 'SearchAProduct' | 'Buy';
-}
-
-interface Entity {
-    entity: string;
-    type: string;
-}

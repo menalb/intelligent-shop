@@ -1,22 +1,28 @@
 import React, { useState } from 'react'
 import ShoppingSearch from './shopping-search'
-import { analyzeSentence } from './shopping-analyze-service'
+import { analyzeSentence } from '../../services/shopping-analyze/shopping-analyze-service'
 import ProductInfo from '../../components/product-info'
 import { ProductFound, Product } from './models'
+import { AnalyzeResult, AnalyzeFailureResult } from '../../services/shopping-analyze/models'
 
 const ShoppingPage = () => {
     const [message, setMessage] = useState('')
     const [isCartEmpty, setCartStatus] = useState(true)
 
-    const [foundProducts, setFoundProducts] = useState([] as Product[])
+    const [foundProducts, setFoundProducts] = useState([] as Product[] | "loading")
 
     const onSearch = async (sentence: string) => {
-        //TODO: Fix
-        const resp = await analyzeSentence(sentence) as ProductFound[];
+        setFoundProducts("loading");
+        const resp = await analyzeSentence(sentence);
 
-        if (resp && resp.length > 0) {
+        if (anyProducts(resp)) {
             setFoundProducts(resp.map(mapToProduct));
         }
+    }
+
+    const anyProducts = (productsResponse: AnalyzeResult | AnalyzeFailureResult): productsResponse is ProductFound[] => {
+        const products = productsResponse as ProductFound[]
+        return products && products.length > 0;
     }
 
     const mapToProduct = (found: ProductFound): Product => ({
@@ -34,9 +40,10 @@ const ShoppingPage = () => {
                 <h4>{message}</h4>
             </section>
             <section>
-                <div className="list-group">
+                {foundProducts === "loading" && <div>loading ...</div>}
+                {foundProducts !== "loading" && <div className="list-group">
                     {foundProducts.map((product, key) => <ProductInfo key={key} product={product} />)}
-                </div>
+                </div>}
             </section >
         </div >
         {!isCartEmpty &&
