@@ -7,11 +7,11 @@ namespace sentence_process.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProcessController : ControllerBase
+    public class SentenceAnalyzerController : ControllerBase
     {
         private readonly ISentenceAnalyzerService _sentenceAnalyzer;
 
-        public ProcessController(ISentenceAnalyzerService sentenceAnalyzer) =>
+        public SentenceAnalyzerController(ISentenceAnalyzerService sentenceAnalyzer) =>
             _sentenceAnalyzer = sentenceAnalyzer;
 
         [HttpGet]
