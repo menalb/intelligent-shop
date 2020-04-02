@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using sentence_process.SenceAnalyzer;
 
-namespace sentence_process.Controllers
+namespace sentence_process.SenceAnalyzer
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProcessController : ControllerBase
+    public interface ISentenceAnalyzerService
     {
-        // GET api/values
-        [HttpGet]
-        public async Task<QueryResult> Get(string sentence)
+        Task<QueryResult> Analyze(string sentence);
+    }
+    public class SentenceAnalyzerService : ISentenceAnalyzerService
+    {
+        private readonly LUISSettings _settings;
+        public SentenceAnalyzerService(LUISSettings settings)
         {
-            return await MakeRequest(sentence);
+            _settings = settings;
         }
 
-        private async Task<QueryResult> MakeRequest(string sentence)
+        public async Task<QueryResult> Analyze(string sentence)
         {
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
 
             // This app ID is for a public sample app that recognizes requests to turn on and turn off lights
-            var luisAppId = "";
-            var endpointKey = "";
+            var luisAppId = _settings.AppId;
+            var endpointKey = _settings.EndpointKey;
 
             // The request header contains your subscription key
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", endpointKey);
@@ -41,7 +38,7 @@ namespace sentence_process.Controllers
             queryString["verbose"] = "false";
             queryString["spellCheck"] = "false";
             queryString["staging"] = "false";
-            var endpointUri = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/" + luisAppId + "?" + queryString;
+            var endpointUri = $"{_settings.ApiEndpoint + luisAppId}?{queryString}";
             var response = await client.GetAsync(endpointUri);
 
             var strResponseContent = await response.Content.ReadAsStringAsync();
@@ -50,8 +47,6 @@ namespace sentence_process.Controllers
             Console.WriteLine(strResponseContent.ToString());
             return JsonConvert.DeserializeObject<QueryResult>(strResponseContent.ToString());
         }
+
     }
-
-
-
 }
