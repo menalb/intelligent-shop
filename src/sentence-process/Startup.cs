@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-using sentence_process.SenceAnalyzer;
+using sentence_process.SentenceAnalyzer;
 
 namespace sentence_process
 {
@@ -22,7 +22,14 @@ namespace sentence_process
         {
             services.Configure<LUISSettings>(Configuration.GetSection("LUIS"));
 
-            services.AddScoped<ISentenceAnalyzerService>(ctx => new SentenceAnalyzerService(ctx.GetService<IOptions<LUISSettings>>().Value));
+            services.AddSingleton<LUISUriBuilder>(ctx => new LUISUriBuilder(ctx.GetService<IOptions<LUISSettings>>().Value));
+            services.AddHttpClient<ISentenceAnalyzerService, LUISSentenceAnalyzerService>((ctx, client) =>
+              {
+                  var config = ctx.GetService<IOptions<LUISSettings>>().Value;
+
+                  client.BaseAddress = new System.Uri(config.ApiEndpoint);
+                  client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", config.EndpointKey);
+              });
 
             services.AddCors(options =>
             {

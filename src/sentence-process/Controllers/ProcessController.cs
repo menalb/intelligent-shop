@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-using sentence_process.SenceAnalyzer;
+using sentence_process.SentenceAnalyzer;
 
 namespace sentence_process.Controllers
 {

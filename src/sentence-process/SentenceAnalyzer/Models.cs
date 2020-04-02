@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace sentence_process.SenceAnalyzer
+namespace sentence_process.SentenceAnalyzer
 {
     public class QueryResult
     {
