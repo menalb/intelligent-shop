@@ -2,7 +2,6 @@ import { ResultReason, TranslationRecognizer, TranslationRecognitionEventArgs, A
 import { speechSettings } from '../configuration';
 
 export const startSpeechRecognizer = (speechRecognizer: SpeechRecognizer, onRecognized: (text: string) => void) => {
-    debugger
     const recognizer = speechRecognizer.recognizer;
     recognizer.recognizing = recognizer.recognized = (s, e) => {
         const text = recognize(e);

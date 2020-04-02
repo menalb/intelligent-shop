@@ -13,7 +13,12 @@ const RecognizerShoppingSearch = (props: { searchSentence: (text: string) => voi
     const stop = () => stopSpeechRecognizer(props.speechRecognizer)
 
     return (<article className="product-search">
-        <input type="text" placeholder="cosa ti serve?" />
+        <input
+            type="text"
+            placeholder="cosa ti serve?"
+            value={result}
+            onChange={e => setResult(e.target.value)}
+        />
         <span className="product-search-actions">
             <button onClick={search}>
                 Cerca

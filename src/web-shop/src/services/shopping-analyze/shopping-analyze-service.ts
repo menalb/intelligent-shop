@@ -3,7 +3,7 @@ import { AnalyzeResult, Result, Entity, AnalyzeFailureResult } from './models';
 import { ProductFound, BuyProduct } from '../../pages/shopping/models';
 
 export const analyzeSentence = async (sentence: string): Promise<AnalyzeResult | AnalyzeFailureResult> => {
-    return await fetch(`${settings.api}/process?sentence=${sentence}`)
+    return await fetch(`${settings.api}/sentenceanalyzer?sentence=${sentence}`)
         .then(response => response
             .json()
             .then(body => processAnalyzeResult(body)))
