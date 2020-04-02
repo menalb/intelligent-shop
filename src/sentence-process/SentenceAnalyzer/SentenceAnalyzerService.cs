@@ -13,10 +13,7 @@ namespace sentence_process.SenceAnalyzer
     public class SentenceAnalyzerService : ISentenceAnalyzerService
     {
         private readonly LUISSettings _settings;
-        public SentenceAnalyzerService(LUISSettings settings)
-        {
-            _settings = settings;
-        }
+        public SentenceAnalyzerService(LUISSettings settings) => _settings = settings;
 
         public async Task<QueryResult> Analyze(string sentence)
         {
@@ -43,10 +40,7 @@ namespace sentence_process.SenceAnalyzer
 
             var strResponseContent = await response.Content.ReadAsStringAsync();
 
-            // Display the JSON result from LUIS
-            Console.WriteLine(strResponseContent.ToString());
             return JsonConvert.DeserializeObject<QueryResult>(strResponseContent.ToString());
         }
-
     }
 }
