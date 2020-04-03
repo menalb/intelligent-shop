@@ -5,8 +5,8 @@ using sentence_process.SentenceAnalyzer;
 
 namespace sentence_process.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class SentenceAnalyzerController : ControllerBase
     {
         private readonly ISentenceAnalyzerService _sentenceAnalyzer;
@@ -17,6 +17,7 @@ namespace sentence_process.Controllers
         [HttpGet]
         public async Task<QueryResult> Get(string sentence) =>
             await MakeRequest(sentence);
+
 
         private async Task<QueryResult> MakeRequest(string sentence) =>
             await _sentenceAnalyzer.Analyze(sentence);

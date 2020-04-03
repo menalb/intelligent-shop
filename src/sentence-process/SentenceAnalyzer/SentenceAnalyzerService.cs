@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+
+using System.Text.Json;
 
 namespace sentence_process.SentenceAnalyzer
 {
@@ -20,7 +21,9 @@ namespace sentence_process.SentenceAnalyzer
 
             var strResponseContent = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<QueryResult>(strResponseContent.ToString());
+            var options = new JsonSerializerOptions();
+            options.PropertyNameCaseInsensitive = true;
+            return JsonSerializer.Deserialize<QueryResult>(strResponseContent, options);
         }
     }
 }
