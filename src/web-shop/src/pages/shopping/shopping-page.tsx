@@ -1,21 +1,25 @@
 import React, { useState } from 'react'
 import ShoppingProductDetector from './shopping-product-detector'
-import './shopping-page.css'
+import ShoppingCartSummary from './shopping-cart-summary'
+import { BuyProduct } from './models'
 
+import './shopping-page.css'
 
 const ShoppingPage = () => {
 
-    const [isCartEmpty, setCartStatus] = useState(true)
-    const [currentProduct, setCurrentProduct] = useState();
+    const [cartProducts, setCartProducts] = useState([] as BuyProduct[]);
+
+    const addProductToCart = (product: BuyProduct) =>
+        setCartProducts([...cartProducts, product]);
 
     return (<article className="container">
         <div>
-            <ShoppingProductDetector />
+            <ShoppingProductDetector onBuyProduct={addProductToCart} />
         </div >
-        {!isCartEmpty &&
+        {cartProducts.length > 0 &&
             <section className="shopping-cart" >
                 <h4>Carrello</h4>
-                {/* <app-shopping-cart [items] = "cartItems" ></app - shopping - cart > */}
+                <ShoppingCartSummary products={cartProducts} />
             </section>}
     </article >
     );

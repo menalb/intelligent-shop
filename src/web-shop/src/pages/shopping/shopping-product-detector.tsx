@@ -3,10 +3,11 @@ import ShoppingSearch from './shopping-search';
 import ProductInfo from '../../components/product-info';
 import { analyzeSentence } from '../../services/shopping-analyze/shopping-analyze-service';
 import { AnalyzeResult, AnalyzeFailureResult } from '../../services/shopping-analyze/models';
-import { ProductFound, Product, NoProduct } from './models';
+import { ProductFound, Product, NoProduct, BuyProduct } from './models';
 import { foundState } from '../../services/models';
 
-const ShoppingProductDetector = () => {
+
+const ShoppingProductDetector = (props: { onBuyProduct: (product: BuyProduct) => void }) => {
 
     const [foundProducts, setFoundProducts] = useState("init" as foundState<Product>)
     const onSearch = async (sentence: string) => {
