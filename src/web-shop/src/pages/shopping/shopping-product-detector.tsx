@@ -41,7 +41,7 @@ const ShoppingProductDetector = () => {
                     <h4>Nessun prodotto trovato</h4>
                 </section>
             }
-            <section>
+            <section className="product-info">
                 {foundProducts === "loading" && <div>loading ...</div>}
                 {foundProducts !== "loading" && foundProducts !== "init" && foundProducts !== "error" && foundProducts.length > 0 && <div className="list-group">
                     {foundProducts.map((product, key) => <ProductInfo key={key} product={product} />)}

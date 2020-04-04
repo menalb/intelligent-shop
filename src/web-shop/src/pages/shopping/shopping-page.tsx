@@ -8,8 +8,6 @@ const ShoppingPage = () => {
     const [isCartEmpty, setCartStatus] = useState(true)
     const [currentProduct, setCurrentProduct] = useState();
 
-
-
     return (<article className="container">
         <div>
             <ShoppingProductDetector />
