@@ -36,12 +36,12 @@ const ShoppingProductDetector = () => {
             <section className="product-search-container">
                 <ShoppingSearch searchSentence={onSearch} />
             </section>
-            {foundProducts.length === 0 &&
-                <section>
-                    <h4>Nessun prodotto trovato</h4>
-                </section>
-            }
             <section className="product-info">
+                {foundProducts.length === 0 &&
+                    <section className="product-search-empty">
+                        <h4>Nessun prodotto trovato</h4>
+                    </section>
+                }
                 {foundProducts === "loading" && <div>loading ...</div>}
                 {foundProducts !== "loading" && foundProducts !== "init" && foundProducts !== "error" && foundProducts.length > 0 && <div className="list-group">
                     {foundProducts.map((product, key) => <ProductInfo key={key} product={product} />)}
