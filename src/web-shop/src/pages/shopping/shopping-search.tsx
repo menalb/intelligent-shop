@@ -5,7 +5,7 @@ import { SpeechRecognizer, startSpeechRecognizer, stopSpeechRecognizer, buildTra
 const RecognizerShoppingSearch = (props: { searchSentence: (text: string) => void, speechRecognizer: SpeechRecognizer }) => {
 
     const [result, setResult] = useState('');
-    const search = () => props.searchSentence(result);
+    const search = () => props.searchSentence(`Cerca ${result}`);
     const start = () => startSpeechRecognizer(props.speechRecognizer, result => {
         setResult(result);
         props.searchSentence(result);
@@ -20,16 +20,17 @@ const RecognizerShoppingSearch = (props: { searchSentence: (text: string) => voi
             onChange={e => setResult(e.target.value)}
         />
         <span className="product-search-actions">
-            <button onClick={search}>
-                Cerca
-        </button>
-            <button onClick={start} >
-                Avvia Riconoscimento
-        </button >
+            <button onClick={search} title="Cerca">
+                <i className="fas fa-search"></i>
+            </button>
 
-            <button onClick={stop} >
-                Stop Riconoscimento
-        </button >
+            <button onClick={start} title="Avvia Riconoscimento" >
+                <i className="fas fa-microphone"></i>
+            </button >
+
+            <button onClick={stop} title="Stop Riconoscimento" >
+                <i className="fas fa-microphone-slash"></i>
+            </button >
         </span>
     </article>);
 }
