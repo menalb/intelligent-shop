@@ -1,6 +1,6 @@
 import { settings } from '../configuration';
 import { AnalyzeResult, Result, Entity, AnalyzeFailureResult } from './models';
-import { ProductFound, BuyProduct } from '../../pages/shopping/models';
+import { ProductFound, BuyProduct as AddToCartProduct } from '../../pages/shopping/models';
 
 export const analyzeSentence = async (sentence: string): Promise<AnalyzeResult | AnalyzeFailureResult> => {
     return await fetch(`${settings.api}/sentenceanalyzer?sentence=${sentence}`)
@@ -14,20 +14,33 @@ export const analyzeSentence = async (sentence: string): Promise<AnalyzeResult |
         });
 }
 
-const processAnalyzeResult = (result: Result): AnalyzeResult =>
-    result.topScoringIntent.intent === 'SearchAProduct' ?
-        processSearchResult(result.entities) :
-        (result.topScoringIntent.intent === 'Buy' ? processBuyResult(result.entities) : { kind: 'no-product' });
+const processAnalyzeResult = (result: Result): AnalyzeResult => {
+    const action = mapIntent[result.topScoringIntent.intent];
+    return (action && hasAnyProduct(result)) ?
+        result.entities.map(entity => action(entity)) :
+        { kind: 'no-product' }
+}
 
-const processSearchResult = (entities: Entity[]): ProductFound[] =>
-    entities.map(entity => ({ kind: 'found-product', product: entity.entity, imageUrl: buildImageUrl(entity.entity) }));
+const mapIntent = {
+    'SearchAProduct': (entity: Entity) => processSearchResult(entity),
+    'Buy': (entity: Entity) => processBuyResult(entity)
+}
 
-const processBuyResult = (entities: Entity[]): BuyProduct =>
-    (entities && entities.length > 0) ? {
-        kind: 'buy',
-        product: entities ? entities[0].entity : undefined
-    } : { kind: 'buy', product: '' };
+const hasAnyProduct = (result: Result): boolean =>
+    result.entities && result.entities.length > 0
+
+const processSearchResult = (entity: Entity): ProductFound =>
+    ({
+        kind: 'found-product',
+        product: entity.entity,
+        imageUrl: buildProductImageUrl(entity.entity)
+    });
+
+const processBuyResult = (entity: Entity): AddToCartProduct =>
+    ({
+        kind: 'add-to-cart',
+        product: entity.entity
+    });
 
 
-const buildImageUrl = (itemName: string): string => `./assets/images/search_${itemName}.jpg`;
-
+const buildProductImageUrl = (productName: string): string => `./assets/images/search_${productName}.jpg`;

@@ -1,6 +1,6 @@
 import { ProductFound, BuyProduct, NoProduct } from '../../pages/shopping/models';
 
-export type AnalyzeResult = ProductFound[] | BuyProduct | NoProduct;
+export type AnalyzeResult = (ProductFound | BuyProduct)[] | NoProduct;
 
 export interface AnalyzeFailureResult {
     error: Error;

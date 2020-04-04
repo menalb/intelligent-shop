@@ -3,7 +3,7 @@ export interface NoProduct {
 }
 
 export interface BuyProduct {
-    kind: 'buy';
+    kind: 'add-to-cart';
     product?: string;
 }
 

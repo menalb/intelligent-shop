@@ -31,7 +31,6 @@ export const recognize = (e: TranslationRecognitionEventArgs): string => {
     const result = e.result;
     const toLanguages = ['it'];
     const translations: { [lng: string]: string; } = { it: '' };
-    const text: string = '';
 
     const reason = ResultReason[result.reason];
     if (reason !== 'TranslatingSpeech' && reason !== 'TranslatedSpeech') {
@@ -63,12 +62,16 @@ export const recognize = (e: TranslationRecognitionEventArgs): string => {
     return result.text;
 }
 
-
 const getLanguageCode = (lang: string) => lang.substring(0, 2);
 
 
 export const buildTranslationRecognizer = (): SpeechRecognizer =>
-    ({ recognizer: new TranslationRecognizer(buildTranslationConfig(), AudioConfig.fromDefaultMicrophoneInput()) });
+    ({
+        recognizer: new TranslationRecognizer(
+            buildTranslationConfig(),
+            AudioConfig.fromDefaultMicrophoneInput()
+        )
+    });
 
 const buildTranslationConfig = () => {
     const speechConfig = SpeechTranslationConfig.fromSubscription(
