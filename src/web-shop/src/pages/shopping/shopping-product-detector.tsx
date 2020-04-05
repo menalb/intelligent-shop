@@ -1,41 +1,31 @@
 import React, { useState } from 'react'
-import ShoppingSearch from './shopping-search';
+import ShoppingDetector, { ShoppingDetectorResponse } from './shopping-detector';
 import ProductInfo from '../../components/product-info';
-import { analyzeSentence } from '../../services/shopping-analyze/shopping-analyze-service';
-import { AnalyzeResult, AnalyzeFailureResult } from '../../services/shopping-analyze/models';
-import { ProductFound, Product, NoProduct, BuyProduct } from './models';
+import { Product, BuyProduct } from './models';
 import { foundState } from '../../services/models';
 
 
 const ShoppingProductDetector = (props: { onBuyProduct: (product: BuyProduct) => void }) => {
 
     const [foundProducts, setFoundProducts] = useState("init" as foundState<Product>)
-    const onSearch = async (sentence: string) => {
-        setFoundProducts("loading");
-        const resp = await analyzeSentence(sentence);
 
-        setFoundProducts(noProductFound(resp) ? [] : anyProducts(resp) ? resp.map(mapToProduct) : 'error');
+    const onActionDetected = (action: ShoppingDetectorResponse) => {
+        if (action.kind === 'loading') {
+            setFoundProducts("loading");
+        }
+        if (action.kind === 'search') {
+            setFoundProducts(action.items);
+        }
+
+        if (action.kind === 'add-to-cart') {
+            console.log('compera');
+        }
     }
 
-    const noProductFound = (productsResponse: AnalyzeResult | AnalyzeFailureResult): productsResponse is NoProduct => {
-        const foundProducts = productsResponse as NoProduct
-        return foundProducts && foundProducts.kind === "no-product"
-    }
-
-    const anyProducts = (productsResponse: AnalyzeResult | AnalyzeFailureResult): productsResponse is ProductFound[] => {
-        const foundProducts = productsResponse as ProductFound[]
-        return foundProducts && foundProducts.length >= 0;
-    }
-
-    const mapToProduct = (found: ProductFound): Product => ({
-        name: found.product,
-        imageUrl: found.imageUrl,
-        description: ''
-    })
     return (
         <>
             <section className="product-search-container">
-                <ShoppingSearch searchSentence={onSearch} />
+                <ShoppingDetector detectedAction={onActionDetected} />
             </section>
             <section className="product-info">
                 {foundProducts.length === 0 &&
