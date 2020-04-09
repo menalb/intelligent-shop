@@ -6,7 +6,6 @@ export const startSpeechRecognizer = (speechRecognizer: SpeechRecognizer, onReco
     recognizer.recognizing = recognizer.recognized = (s, e) => {
         const text = recognize(e);
         if (text) {
-            console.log(text)
             onRecognized(text);
         }
     };
