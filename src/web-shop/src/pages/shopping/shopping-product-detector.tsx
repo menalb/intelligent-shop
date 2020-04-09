@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useReducer, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import ShoppingDetector, { ShoppingDetectorResponse } from './shopping-detector';
 import ProductInfo from '../../components/product-info';
 import { Product, BuyProduct } from './models';
 import { foundState } from '../../services/models';
-
 
 const ShoppingProductDetector = (props: { onBuyProduct: (product: BuyProduct) => void }) => {
 
@@ -18,7 +17,6 @@ const ShoppingProductDetector = (props: { onBuyProduct: (product: BuyProduct) =>
             setSearchStatus("loading");
         else
             setSearchStatus("init");
-
 
         if (action.kind === 'search') {
             setOperation('search')
@@ -47,13 +45,14 @@ const ShoppingProductDetector = (props: { onBuyProduct: (product: BuyProduct) =>
 
     const anyProduct = (items: Product[]): boolean => items && items.length > 0;
 
+    const isNoProductFound = searchStatus !== "loading" && searchStatus !== "init" && foundProducts.length === 0;
     return (
         <>
             <section className="product-search-container">
                 <ShoppingDetector detectedAction={onActionDetected} />
             </section>
             <section className="product-info">
-                {searchStatus !== "loading" && searchStatus !== "init" && foundProducts.length === 0 &&
+                {isNoProductFound &&
                     <section className="product-search-empty">
                         <h4>Nessun prodotto trovato</h4>
                     </section>
@@ -62,7 +61,7 @@ const ShoppingProductDetector = (props: { onBuyProduct: (product: BuyProduct) =>
                 {anyProduct(foundProducts) && <div className="list-group">
                     {foundProducts.map((product, key) => <ProductInfo key={key} product={product} />)}
                 </div>}
-            </section >
+            </section>
         </>
     );
 }
