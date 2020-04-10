@@ -9,25 +9,23 @@ import './shopping-page.css'
 
 const ShoppingPage = () => {
 
-    //const [cartProducts, setCartProducts] = useState([] as BuyProduct[]);
-    const [cartProducts, setCartProducts] = useState([{ product: 'mela' }] as BuyProduct[]);
+    const [cartProducts, setCartProducts] = useState([] as BuyProduct[]);
+    //const [cartProducts, setCartProducts] = useState([{ product: 'mela' }] as BuyProduct[]);
 
     const addProductToCart = (product: BuyProduct) =>
         setCartProducts([...cartProducts, product]);
 
-    // const [searchStatus, setSearchStatus] = useState({ status: "init" } as searchResponseStatus<Product>)
-    const fakeProducts = [{ name: 'mela', description: 'bar', imageUrl: '' }];
-    const [searchStatus, setSearchStatus] = useState({ status: "loaded", result: fakeProducts } as searchResponseStatus<Product>);
+    const [searchStatus, setSearchStatus] = useState({ status: "init" } as searchResponseStatus<Product>)
+    //const fakeProducts = [{ name: 'mela', description: 'bar', imageUrl: '' }];
+    //const [searchStatus, setSearchStatus] = useState({ status: "loaded", result: fakeProducts } as searchResponseStatus<Product>);
     const [operation, setOperation] = useState('');
     const emptyProducts: Product[] = [];
-    const [foundProducts, setFoundProducts] = useState(fakeProducts);
-    const loadingStatus: searchResponseStatus<Product> = { status: "loading" }
-
+    const [foundProducts, setFoundProducts] = useState(emptyProducts);
 
     const onActionDetected = useCallback((action: ShoppingDetectorResponse) => {
 
         if (action.kind === 'loading')
-            setSearchStatus(loadingStatus);
+            setSearchStatus({ status: "loading" });
         else
             setSearchStatus({ status: "init" });
 
