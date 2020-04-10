@@ -23,7 +23,7 @@ const ShoppingProductDetector = (props: { searchProductResponse: searchResponseS
                     <h4>Nessun prodotto trovato</h4>
                 </section>
             }
-            {searchStatus === "loading" && <div>loading ...</div>}
+            {searchStatus === "loading" && <div className="product-search-loading">loading ...</div>}
             {searchStatus === "error" && <div>Error ...</div>}
             {anyProduct && <div className="list-group">
                 {currentProducts.map((product, key) => <ProductInfo key={key} product={product} />)}

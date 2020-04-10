@@ -41,3 +41,7 @@
             display: grid;
             grid-template-columns: 0.80fr 0.15fr;
         }
+        
+        .product-search-loading {
+            position: absolute;
+        }
