@@ -2,11 +2,10 @@ import React, { useState, useCallback, useEffect } from 'react'
 import ShoppingProductDetector from './shopping-product-detector'
 import ShoppingCartSummary from './shopping-cart-summary'
 import { BuyProduct, Product } from './models'
-
-import './shopping-page.css'
 import ShoppingDetector, { ShoppingDetectorResponse } from './shopping-detector'
 import { searchResponseStatus } from '../../services/models'
-//import { foundState } from '../../services/models'
+
+import './shopping-page.css'
 
 const ShoppingPage = () => {
 
