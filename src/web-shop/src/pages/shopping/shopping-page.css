@@ -36,3 +36,8 @@
         .product-search-actions button:disabled {
             cursor: default;
         }
+        
+        .shopping-product-container {
+            display: grid;
+            grid-template-columns: 0.80fr 0.15fr;
+        }

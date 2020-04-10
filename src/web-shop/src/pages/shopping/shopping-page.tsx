@@ -9,27 +9,32 @@ import './shopping-page.css'
 
 const ShoppingPage = () => {
 
-    const [cartProducts, setCartProducts] = useState([] as BuyProduct[]);
+    //const [cartProducts, setCartProducts] = useState([] as BuyProduct[]);
+    const [cartProducts, setCartProducts] = useState([{ product: 'mela' }] as BuyProduct[]);
 
     const addProductToCart = (product: BuyProduct) =>
         setCartProducts([...cartProducts, product]);
 
-    const [searchStatus, setSearchStatus] = useState({ status: "init" } as searchResponseStatus<Product>)
+    // const [searchStatus, setSearchStatus] = useState({ status: "init" } as searchResponseStatus<Product>)
+    const fakeProducts = [{ name: 'mela', description: 'bar', imageUrl: '' }];
+    const [searchStatus, setSearchStatus] = useState({ status: "loaded", result: fakeProducts } as searchResponseStatus<Product>);
     const [operation, setOperation] = useState('');
     const emptyProducts: Product[] = [];
-    const [foundProducts, setFoundProducts] = useState(emptyProducts);
+    const [foundProducts, setFoundProducts] = useState(fakeProducts);
+    const loadingStatus: searchResponseStatus<Product> = { status: "loading" }
+
 
     const onActionDetected = useCallback((action: ShoppingDetectorResponse) => {
 
         if (action.kind === 'loading')
-            setSearchStatus({ status: "loading" } as searchResponseStatus<Product>);
+            setSearchStatus(loadingStatus);
         else
-            setSearchStatus(({ status: "init" } as searchResponseStatus<Product>));
+            setSearchStatus({ status: "init" });
 
         if (action.kind === 'search') {
             setOperation('search')
             setFoundProducts(action.items);
-            setSearchStatus(({ status: "loaded", result: action.items } as searchResponseStatus<Product>));
+            setSearchStatus({ status: "loaded", result: action.items });
         }
 
         //if (searchStatus === 'loading' && action.kind === 'not-found' && foundProducts.length === 0) {
@@ -52,20 +57,27 @@ const ShoppingPage = () => {
             product: (foundProducts as Product[])[0].name
         })
 
-    return (<article className="container">
+    return (<article className="shopping-container">
         <section className="product-search-container">
             <ShoppingDetector detectedAction={onActionDetected} />
         </section>
-        <div>
+        <section className="shopping-product-container">
             <ShoppingProductDetector searchProductResponse={searchStatus} />
-        </div >
-        {cartProducts.length > 0 &&
-            <section className="shopping-cart" >
-                <h4>Carrello</h4>
-                <ShoppingCartSummary products={cartProducts} />
-            </section>}
+            <div className="shopping-cart" >
+                <CartArea products={cartProducts} />
+            </div>
+        </section >
     </article >
     );
 }
 
 export default ShoppingPage;
+
+const CartArea = (props: { products: BuyProduct[] }) => (<>
+    <h4><i className="fas fa-shopping-cart"></i>Carrello</h4>
+    {
+        props.products.length > 0 &&
+        <ShoppingCartSummary products={props.products} />
+    }
+</>
+)
