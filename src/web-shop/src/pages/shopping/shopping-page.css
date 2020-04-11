@@ -45,3 +45,17 @@
         .product-search-loading {
             position: absolute;
         }
+        
+        .shopping-cart {}
+        
+        .shopping-cart-title {
+            display: flex;
+            justify-content: start;
+            background-color: var(--site-color);
+            color: white;
+            padding: 0.5rem 0;
+        }
+        
+        .shopping-cart-title i {
+            padding: 0 1rem;
+        }
