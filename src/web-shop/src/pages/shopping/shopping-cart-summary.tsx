@@ -28,11 +28,16 @@ const ShoppingCartSummary = (props: ShoppingCartSummaryProps) => {
     return (<article>
         {
             products.length === 0 ? <em>Carrello vuoto</em> :
-                <ul>
-                    {products.map((cartProd, index) => <li key={index}>
-                        {cartProd.quantity}
-                        -
-                        {cartProd.product.product}
+                <ul className="shopping-cart-items">
+                    {products.map((cartProd, index) => <li
+                        key={index}
+                        className="shopping-cart-item">
+                        <span className="item-product">
+                            {cartProd.product.product}
+                        </span>
+                        <span className="item-qty">
+                            {cartProd.quantity}
+                        </span>
                     </li>)}
                 </ul>
         }
